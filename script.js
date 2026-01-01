@@ -27,8 +27,6 @@ function toggleTheme() {
     document.body.classList.toggle('dark-mode');
     const btn = document.getElementById('theme-btn');
     const isDark = document.body.classList.contains('dark-mode');
-    
-    // Меняем иконку
     if (isDark) {
         btn.innerHTML = '<i class="ph-bold ph-sun"></i>';
     } else {
@@ -115,11 +113,9 @@ function startGameSetup() {
         alert("Выберите локации в настройках!");
         return;
     }
-
     const totalPlayers = parseInt(document.getElementById('players-range').value);
     const spyCount = parseInt(document.getElementById('spy-range').value);
     const minutes = parseInt(document.getElementById('time-range').value);
-
     currentLocation = activeLocations[Math.floor(Math.random() * activeLocations.length)];
     players = Array(totalPlayers).fill(null).map(() => ({ role: "Мирный житель", location: currentLocation, isSpy: false }));
     
@@ -131,7 +127,6 @@ function startGameSetup() {
             spiesAdded++;
         }
     }
-
     currentPlayerIndex = 0;
     totalTimeSec = minutes * 60;
     showCardScreen();
@@ -170,7 +165,6 @@ function nextPlayer() {
 
 function startMainGame() {
     showScreen('game');
-    
     const list = document.getElementById('ingame-locations-list');
     list.innerHTML = '';
     [...activeLocations].sort().forEach(loc => {
@@ -179,7 +173,6 @@ function startMainGame() {
         li.onclick = function() { this.classList.toggle('done'); };
         list.appendChild(li);
     });
-
     startTimer();
 }
 
@@ -188,10 +181,8 @@ function startTimer() {
     const circle = document.querySelector('.progress-ring__circle');
     const radius = circle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
-    
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
     circle.style.strokeDashoffset = 0;
-    
     let timeLeft = totalTimeSec;
     
     timerInterval = setInterval(() => {
@@ -199,7 +190,6 @@ function startTimer() {
         const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
         const s = (timeLeft % 60).toString().padStart(2, '0');
         display.innerText = `${m}:${s}`;
-        
         const offset = circumference - (timeLeft / totalTimeSec) * circumference;
         circle.style.strokeDashoffset = -offset;
         
@@ -211,7 +201,6 @@ function startTimer() {
     }, 1000);
 }
 
-// --- ИТОГИ ---
 function finishGame() {
     clearInterval(timerInterval);
     showScreen('results');
@@ -252,8 +241,42 @@ function closeAllSheets() {
 function restartGame() {
     clearInterval(timerInterval);
     document.getElementById('timer-display').innerText = "00:00";
-    document.getElementById('timer-display').style.color = "var(--text-main)"; // Fix color reset
+    document.getElementById('timer-display').style.color = "var(--text-main)";
     showScreen('setup');
 }
 
 renderSettingsList();
+
+// --- PWA ЛОГИКА ---
+let deferredPrompt;
+const pwaBanner = document.getElementById('pwa-banner');
+const iosInstructions = document.getElementById('install-instructions');
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+if (!isStandalone && !localStorage.getItem('pwaClosed')) {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showBanner();
+    });
+    if (isIOS) {
+        iosInstructions.innerText = "Нажмите 'Поделиться' -> 'На экран Домой'";
+        setTimeout(showBanner, 3000);
+    }
+}
+
+function showBanner() { pwaBanner.classList.add('visible'); }
+function closePWA() { pwaBanner.classList.remove('visible'); localStorage.setItem('pwaClosed', 'true'); }
+function installPWA() {
+    if (isIOS) {
+        alert("На iPhone нажмите кнопку 'Поделиться' внизу браузера (квадрат со стрелкой), и выберите 'На экран Домой'.");
+        closePWA();
+    } else if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            deferredPrompt = null;
+            closePWA();
+        });
+    }
+}
