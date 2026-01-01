@@ -2,124 +2,204 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPIER.DEV</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Spyfall: Premium</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;400&family=Courier+Prime&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
-    <div class="noise-overlay"></div>
-    <div class="rain-overlay"></div>
-    <div class="vignette"></div>
-    
-    <div class="spotlight" id="spotlight"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="mesh-background"></div>
 
-    <nav>
-        <div class="logo">ALPIER.DEV</div>
-        <ul class="menu">
-            <li onclick="scrollToSection('hero')">Главная</li>
-            <li onclick="scrollToSection('dossier')">Досье</li>
-            <li onclick="scrollToSection('cases')">Архив Дел</li>
-            <li onclick="scrollToSection('contact')">Связь</li>
-        </ul>
-        <!-- <button id="soundToggle" class="sound-btn">🔇 MUTE</button> -->
-    </nav>
-
-    <main class="container">
-        <section id="hero" class="section hero">
-            <div class="hero-content">
-                <h1 class="typewriter">Истина где-то в коде...</h1>
-                <p>Веб-разработка с характером. Я создаю интерфейсы, которые рассказывают истории и сохраняют удобства.</p>
-                <button class="btn-primary" onclick="scrollToSection('cases')">Изучить улики</button>
-            </div>
-        </section>
-
-        <section id="dossier" class="section dossier">
-            <h2 class="section-title">Личное Досье</h2>
-            <div class="dossier-grid">
-                <div class="photo-frame">
-                    <img src="assets/me.png" alt="Agent Photo" class="dossier-photo">
-                    <span class="stamp">CONFIDENTIAL</span>
+    <div class="app-container">
+        
+        <div id="setup-screen" class="screen active">
+            <div class="top-bar">
+                <div class="left-controls">
+                    <button class="settings-btn icon-only" onclick="toggleTheme()" id="theme-btn">
+                        <i class="ph-bold ph-moon"></i>
+                    </button>
+                    <button class="settings-btn icon-only" onclick="toggleRules()">
+                        <i class="ph-bold ph-book-open-text"></i>
+                    </button>
                 </div>
-                <div class="dossier-text">
-                    <h3>Статус: Активен</h3>
-                    <p>Специализация: Full-stack разработка, архитектура баз данных, создание интерактивных квестов (ARG).</p>
-                    <p>Особые приметы: Внимание к деталям, любовь к сложной логике и темным темам оформления.</p>
-                    
-                    <div class="skills-list">
-                        <span>JavaScript (ES6+)</span>
-                        <span>React / Vue</span>
-                        <span>Node.js</span>
-                        <span>WebGL / Three.js</span>
-                        <span>Cybersecurity Basics</span>
+                <button class="settings-btn" onclick="openSettings()">
+                    <i class="ph-bold ph-faders"></i> Фильтр
+                </button>
+            </div>
+
+            <div class="header-large">
+                <h1>Шпион</h1>
+            </div>
+            
+            <div class="card-panel">
+                <div class="control-row">
+                    <div class="label-box">
+                        <i class="ph-fill ph-users icon-blue"></i>
+                        <label>Игроков</label>
+                    </div>
+                    <div class="value-control">
+                        <button onclick="updateValue('players', -1)"><i class="ph-bold ph-minus"></i></button>
+                        <span id="count-players-val">3</span>
+                        <button onclick="updateValue('players', 1)"><i class="ph-bold ph-plus"></i></button>
+                    </div>
+                </div>
+                <input type="range" id="players-range" min="3" max="12" value="3" class="hidden-range">
+
+                <div class="divider"></div>
+
+                <div class="control-row">
+                    <div class="label-box">
+                        <i class="ph-fill ph-sunglasses icon-red"></i>
+                        <label>Шпионов</label>
+                    </div>
+                    <div class="value-control">
+                        <button onclick="updateValue('spy', -1)"><i class="ph-bold ph-minus"></i></button>
+                        <span id="count-spy-val">1</span>
+                        <button onclick="updateValue('spy', 1)"><i class="ph-bold ph-plus"></i></button>
+                    </div>
+                </div>
+                <input type="range" id="spy-range" min="1" max="15" value="1" class="hidden-range">
+
+                <div class="divider"></div>
+
+                <div class="control-row">
+                    <div class="label-box">
+                        <i class="ph-fill ph-hourglass-high icon-dark"></i>
+                        <label>Минуты</label>
+                    </div>
+                    <div class="value-control">
+                        <button onclick="updateValue('time', -1)"><i class="ph-bold ph-minus"></i></button>
+                        <span id="time-val">5</span>
+                        <button onclick="updateValue('time', 1)"><i class="ph-bold ph-plus"></i></button>
+                    </div>
+                </div>
+                <input type="range" id="time-range" min="1" max="15" value="5" class="hidden-range">
+            </div>
+
+            <button onclick="startGameSetup()" class="main-btn floating-btn">
+                Начать игру <i class="ph-bold ph-arrow-right"></i>
+            </button>
+        </div>
+
+        <div id="card-screen" class="screen">
+            <div class="top-indicator">
+                <span class="player-pill">Игрок <span id="player-number">1</span></span>
+            </div>
+            
+            <div class="card-area" onclick="flipCard()">
+                <div class="game-card" id="game-card">
+                    <div class="card-face front">
+                        <div class="pattern-circle">
+                            <i class="ph-duotone ph-fingerprint"></i>
+                        </div>
+                        <p>Нажмите,<br>чтобы открыть досье</p>
+                    </div>
+                    <div class="card-face back">
+                        <div class="role-content">
+                            <h2 id="role-text">Роль</h2>
+                            <div class="location-badge">
+                                <i class="ph-fill ph-map-pin"></i>
+                                <span id="location-text">Локация</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <section id="cases" class="section cases">
-            <h2 class="section-title">Архив Расследований</h2>
-            <div class="projects-grid" id="projectsContainer">
-                </div>
-        </section>
+            <p class="instruction-text">Запомните роль и передайте устройство</p>
+            <button id="next-player-btn" class="main-btn hidden fade-up" onclick="nextPlayer()">
+                Скрыть и передать <i class="ph-bold ph-arrow-right"></i>
+            </button>
+        </div>
 
-        <section id="contact" class="section contact">
-            <h2 class="section-title">Установить контакт</h2>
-            <form class="contact-form">
-                <div class="input-group">
-                    <label>Ваше имя</label>
-                    <input type="text" placeholder="John Doe">
-                </div>
-                <div class="input-group">
-                    <label>Метод связи (Email)</label>
-                    <input type="email" placeholder="john@agency.com">
-                </div>
-                <div class="input-group">
-                    <label>Сообщение</label>
-                    <textarea placeholder="У меня есть дело для вас..."></textarea>
-                </div>
-                <button type="submit" class="btn-primary">Отправить шифровку</button>
-            </form>
-        </section>
-    </main>
+        <div id="game-screen" class="screen">
+            <div class="timer-container">
+                <svg class="progress-ring" width="260" height="260">
+                    <circle class="progress-ring__circle" stroke="currentColor" stroke-width="8" fill="transparent" r="120" cx="130" cy="130"/>
+                </svg>
+                <div class="timer-text" id="timer-display">05:00</div>
+            </div>
 
-    <footer class="footer">
-        <p>&copy; 2025 Noir Development. All files are classified.</p>
-    </footer>
-
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <div class="modal-body">
-                <h2 id="modalTitle">Project Title</h2>
-                <p class="modal-meta" id="modalStack">Stack Info</p>
-                
-                <div class="detective-board">
-                    <div class="photo-card" id="photo1"></div>
-                    <div class="string-connector"></div>
-                    <div class="photo-card" id="photo2"></div>
-                    <div class="string-connector"></div>
-                    <div class="photo-card" id="photo3"></div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="toggleLocationsList()">
+                    <span class="menu-icon icon-bg-blue"><i class="ph-fill ph-list-dashes"></i></span>
+                    <span>Локации</span>
                 </div>
-
-                <div class="modal-description" id="modalDesc">
-                    Описание...
-                </div>
-                <div class="modal-links">
-                    <a href="#" id="modalLive" target="_blank" class="btn-secondary">Открыть сайт</a>
-                    <a href="#" id="modalCode" target="_blank" class="btn-secondary">GitHub</a>
+                <div class="menu-item" onclick="finishGame()">
+                    <span class="menu-icon icon-bg-red"><i class="ph-fill ph-flag-checkered"></i></span>
+                    <span>Итоги</span>
                 </div>
             </div>
         </div>
-    </div>
 
-    <audio id="bgAudio" loop>
-        <source src="rain.mp3" type="audio/mpeg">
-    </audio>
+        <div id="results-screen" class="screen">
+            <div class="header-large center-text">
+                <h2>Итоги игры</h2>
+                <div class="final-location">
+                    <p>Место преступления:</p>
+                    <h3 id="result-location">???</h3>
+                </div>
+            </div>
+
+            <div class="results-list-container">
+                <ul id="results-list"></ul>
+            </div>
+
+            <button onclick="restartGame()" class="main-btn">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i> Новая игра
+            </button>
+        </div>
+
+        <div id="rules-sheet" class="bottom-sheet">
+            <div class="sheet-header">
+                <div class="drag-handle"></div>
+                <h3>Правила игры</h3>
+                <button class="close-btn" onclick="toggleRules()"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="sheet-content rules-content">
+                <div class="rule-block">
+                    <i class="ph-duotone ph-identification-card rule-icon"></i>
+                    <div><h4>1. Роли</h4><p>Все игроки находятся в одной локации, кроме Шпиона.</p></div>
+                </div>
+                <div class="rule-block">
+                    <i class="ph-duotone ph-chats-circle rule-icon"></i>
+                    <div><h4>2. Разговор</h4><p>Задавайте вопросы друг другу, чтобы вычислить шпиона.</p></div>
+                </div>
+                <div class="rule-block">
+                    <i class="ph-duotone ph-detective rule-icon"></i>
+                    <div><h4>3. Цель</h4><p>Шпион должен угадать локацию. Мирные должны найти шпиона.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="locations-sheet" class="bottom-sheet">
+            <div class="sheet-header">
+                <div class="drag-handle"></div>
+                <h3>База данных</h3>
+                <button class="close-btn" onclick="toggleLocationsList()"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="sheet-content">
+                <ul id="ingame-locations-list" class="check-list"></ul>
+            </div>
+        </div>
+
+        <div id="settings-modal" class="full-modal">
+            <div class="modal-header-fixed">
+                <button class="back-btn" onclick="closeSettings()"><i class="ph-bold ph-caret-left"></i> Назад</button>
+                <h3>Фильтр локаций</h3>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="modal-scroll-content">
+                <p class="hint-text">Отключите места, которые не хотите использовать.</p>
+                <ul id="settings-locations-list" class="toggle-list"></ul>
+            </div>
+        </div>
+
+        <div id="modal-backdrop" class="backdrop" onclick="closeAllSheets()"></div>
+
+    </div>
 
     <script src="script.js"></script>
 </body>
