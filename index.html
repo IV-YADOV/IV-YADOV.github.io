@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Spyfall: Premium</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4e5ae6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/263/263058.png">
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -87,7 +94,6 @@
             <div class="top-indicator">
                 <span class="player-pill">Игрок <span id="player-number">1</span></span>
             </div>
-            
             <div class="card-area" onclick="flipCard()">
                 <div class="game-card" id="game-card">
                     <div class="card-face front">
@@ -107,7 +113,6 @@
                     </div>
                 </div>
             </div>
-
             <p class="instruction-text">Запомните роль и передайте устройство</p>
             <button id="next-player-btn" class="main-btn hidden fade-up" onclick="nextPlayer()">
                 Скрыть и передать <i class="ph-bold ph-arrow-right"></i>
@@ -121,7 +126,6 @@
                 </svg>
                 <div class="timer-text" id="timer-display">05:00</div>
             </div>
-
             <div class="menu-grid">
                 <div class="menu-item" onclick="toggleLocationsList()">
                     <span class="menu-icon icon-bg-blue"><i class="ph-fill ph-list-dashes"></i></span>
@@ -142,11 +146,9 @@
                     <h3 id="result-location">???</h3>
                 </div>
             </div>
-
             <div class="results-list-container">
                 <ul id="results-list"></ul>
             </div>
-
             <button onclick="restartGame()" class="main-btn">
                 <i class="ph-bold ph-arrow-counter-clockwise"></i> Новая игра
             </button>
@@ -199,8 +201,34 @@
 
         <div id="modal-backdrop" class="backdrop" onclick="closeAllSheets()"></div>
 
+        <div id="pwa-banner" class="install-banner">
+            <div class="install-content">
+                <div class="install-icon-box">
+                    <i class="ph-fill ph-download-simple"></i>
+                </div>
+                <div class="install-info">
+                    <span class="install-title">Установить приложение</span>
+                    <span class="install-desc" id="install-instructions">Для игры без интернета</span>
+                </div>
+            </div>
+            <div class="install-actions">
+                <button onclick="installPWA()" class="pwa-btn">ОК</button>
+                <button onclick="closePWA()" class="pwa-close"><i class="ph-bold ph-x"></i></button>
+            </div>
+        </div>
+
     </div>
 
     <script src="script.js"></script>
+    <script>
+    // Регистрация Service Worker для работы оффлайн
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker: Успешно зарегистрирован'))
+                .catch(err => console.log('Service Worker: Ошибка', err));
+        });
+    }
+</script>
 </body>
 </html>
