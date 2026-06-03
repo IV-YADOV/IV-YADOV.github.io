@@ -28,14 +28,13 @@
       radial-gradient(140% 120% at 50% 110%, #f6c9c2 0%, transparent 60%),
       linear-gradient(160deg, #fff8f3 0%, #fbe6e1 100%);
     background-attachment:fixed;
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
     position:relative;
     width:100%;
-    min-height:100vh;
-    min-height:100dvh;
-    overflow-x:hidden;
-    overflow-y:auto;
-    padding:24px 14px;
+    height:100vh;
+    height:100dvh;
+    overflow:hidden;
+    padding:16px 12px;
   }
   /* paper grain */
   body::after{
@@ -56,11 +55,12 @@
   .card{
     position:relative;z-index:10;
     width:min(92vw,460px);
-    margin:auto 0;
+    max-height:calc(100dvh - 32px);
     background:var(--cream);
     border-radius:26px;
-    padding:46px 34px 40px;
+    padding:40px 30px 34px;
     text-align:center;
+    overflow:hidden;
     box-shadow:0 30px 60px -22px rgba(150,70,80,.45), 0 4px 0 rgba(255,255,255,.6) inset;
     border:2px dashed rgba(201,95,107,.35);
     transform:rotate(-1.2deg);
@@ -81,15 +81,17 @@
 
   .eyebrow{font-family:'Caveat',cursive;font-size:26px;color:var(--rose-deep);transform:rotate(-2deg);display:inline-block;}
   h1{
-    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,7.5vw,44px);
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,7vw,42px);
     line-height:1.05;margin:6px 0 4px;letter-spacing:-.5px;
   }
   h1 em{font-style:italic;color:var(--rose-deep);}
-  .sub{font-size:16px;color:#8a6a72;margin:14px auto 6px;max-width:32ch;line-height:1.5;}
-  .big-heart{font-size:50px;display:block;margin:10px auto 2px;animation:beat 1.4s ease-in-out infinite;}
+  .sub{font-size:15px;color:#8a6a72;margin:12px auto 4px;max-width:32ch;line-height:1.45;}
+  .big-heart{font-size:46px;display:block;margin:8px auto 0;animation:beat 1.4s ease-in-out infinite;}
   @keyframes beat{0%,100%{transform:scale(1);}14%{transform:scale(1.18);}28%{transform:scale(1);}42%{transform:scale(1.12);}}
+  /* в режиме планировщика/итога убираем лишнюю высоту */
+  .card.compact .big-heart,.card.compact .eyebrow{display:none;}
 
-  .btns{display:flex;gap:14px;justify-content:center;align-items:center;margin-top:26px;flex-wrap:wrap;position:relative;min-height:62px;}
+  .btns{display:flex;gap:14px;justify-content:center;align-items:center;margin-top:22px;flex-wrap:wrap;position:relative;min-height:58px;}
   button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;font-weight:700;transition:transform .15s ease, box-shadow .2s ease, background .2s;}
   .yes{
     background:var(--rose-deep);color:#fff;font-size:18px;padding:15px 34px;border-radius:40px;
@@ -115,26 +117,26 @@
   .music.off .bars i{animation-play-state:paused;height:5px!important;}
   @keyframes eq{0%,100%{height:5px;}50%{height:18px;}}
 
-  .hint{font-size:13px;color:#b89aa0;margin-top:16px;font-family:'Caveat',cursive;font-size:18px;}
+  .hint{font-size:13px;color:#b89aa0;margin-top:14px;font-family:'Caveat',cursive;font-size:18px;}
 
   /* celebration */
   #burst{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden;}
   .conf{position:absolute;will-change:transform;}
   @keyframes conffall{to{transform:translate(var(--tx),var(--ty)) rotate(var(--rot));opacity:0;}}
 
-  .details{margin-top:18px;background:rgba(247,217,208,.45);border-radius:16px;padding:16px;display:none;animation:pop .6s both;}
+  .details{margin-top:14px;background:rgba(247,217,208,.45);border-radius:16px;padding:14px;display:none;animation:pop .6s both;}
   .details.show{display:block;}
-  .details .row{display:flex;align-items:center;gap:10px;justify-content:center;font-size:16px;color:var(--plum);margin:6px 0;line-height:1.4;}
+  .details .row{display:flex;align-items:center;gap:10px;justify-content:center;font-size:16px;color:var(--plum);margin:4px 0;line-height:1.35;}
   .details .row b{font-family:'Fraunces',serif;font-weight:600;}
 
   /* planner */
-  .planner{margin-top:20px;display:none;animation:pop .6s both;}
+  .planner{margin-top:14px;display:none;animation:pop .6s both;}
   .planner.show{display:block;}
-  .plabel{font-family:'Caveat',cursive;font-size:22px;color:var(--rose-deep);margin:14px 0 8px;}
-  .chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;}
+  .plabel{font-family:'Caveat',cursive;font-size:21px;color:var(--rose-deep);margin:10px 0 7px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
   .chip{
     background:#fff;border:1.5px solid rgba(201,95,107,.25);color:var(--plum);
-    padding:10px 14px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;
+    padding:9px 13px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;
     transition:transform .12s, background .2s, border-color .2s, box-shadow .2s;
     box-shadow:0 4px 10px -6px rgba(150,90,100,.4);
   }
@@ -201,6 +203,23 @@
     font-size:19px;color:var(--rose-deep);padding:4px 8px;
   }
 
+  .save{margin-top:16px;font-size:16px;}
+  .savehint{font-family:'Caveat',cursive;font-size:16px;color:#b07a82;margin-top:8px;}
+  .imgbox{
+    width:min(92vw,360px);max-height:calc(100dvh - 36px);
+    display:flex;flex-direction:column;align-items:center;
+    background:var(--cream);border-radius:24px;padding:16px;
+    border:2px dashed rgba(201,95,107,.35);
+    box-shadow:0 28px 60px -20px rgba(120,50,60,.55);
+    animation:pop .4s cubic-bezier(.2,1.1,.3,1) both;
+  }
+  .preview{width:100%;display:flex;justify-content:center;min-height:0;}
+  .preview img{
+    max-width:100%;max-height:calc(100dvh - 150px);width:auto;border-radius:14px;
+    box-shadow:0 14px 30px -14px rgba(120,50,60,.55);border:3px solid #fff;
+  }
+  .imgnote{font-family:'Caveat',cursive;font-size:17px;color:#b07a82;margin-top:10px;text-align:center;}
+
   /* ---------- адаптация под телефон ---------- */
   @media (max-width:520px){
     body{padding:18px 10px;}
@@ -227,10 +246,27 @@
     h1{font-size:27px;}
     .chip{font-size:12px;padding:8px 11px;}
   }
-  /* избегаем перекоса на самых маленьких высотах */
-  @media (max-height:560px){
-    .big-heart{font-size:38px;margin:6px auto 0;}
-    .card{padding-top:30px;}
+  /* подгонка под низкие экраны, чтобы не было скролла */
+  @media (max-height:720px){
+    .card{padding:30px 26px 26px;}
+    .big-heart{font-size:40px;}
+    .sub{font-size:14px;margin:9px auto 3px;}
+    .yes{padding:13px 30px;font-size:17px;}
+    .btns{margin-top:18px;min-height:54px;}
+    .plabel{font-size:19px;margin:9px 0 6px;}
+  }
+  @media (max-height:600px){
+    .card{padding:22px 24px 20px;}
+    .eyebrow{font-size:22px;}
+    .big-heart{font-size:32px;margin:4px auto 0;}
+    h1{font-size:clamp(24px,6vw,34px);}
+    .sub{font-size:13px;margin:7px auto 2px;}
+    .chip{padding:8px 11px;font-size:13px;}
+    .plabel{font-size:18px;margin:7px 0 5px;}
+    .datefield{padding:11px 16px;}
+    .confirm{margin-top:12px!important;}
+    .hint{margin-top:10px;font-size:16px;}
+    .details{margin-top:10px;padding:12px;}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.001s!important;}
@@ -287,8 +323,19 @@
     </div>
   </div>
 
+  <!-- готовая открытка -->
+  <div class="cal-overlay" id="imgOverlay">
+    <div class="imgbox" role="dialog" aria-modal="true" aria-label="Открытка">
+      <div class="preview" id="preview"></div>
+      <p class="imgnote" id="imgnote">зажми картинку → «Сохранить изображение» 💌</p>
+      <button class="cal-close" id="imgClose">закрыть</button>
+    </div>
+  </div>
+
   <div class="details" id="details">
     <div class="row" id="finalrow">💞 <span id="finaltext"></span></div>
+    <button class="yes save" id="saveBtn">Сохранить картинку 📸</button>
+    <p class="savehint" id="savehint">красивая открытка с нашим свиданием 💌</p>
   </div>
 
   <p class="hint" id="hint">нажми «да» 🙈 (или попробуй поймать «нет»)</p>
@@ -358,13 +405,19 @@ function runAway(){
   yes.style.transform = `scale(${scale})`;
   yes.style.zIndex = 5;
 
-  // перемещаем «нет» в случайную точку строго внутри видимого экрана
-  const pad = 12;
+  // реально видимая область (учитывает адресную строку браузера на мобилке)
+  const vp = window.visualViewport;
+  const vw = vp ? vp.width : window.innerWidth;
+  const vh = vp ? vp.height : window.innerHeight;
+  const offX = vp ? vp.offsetLeft : 0;
+  const offY = vp ? vp.offsetTop : 0;
+
+  const pad = 14;
   const w = no.offsetWidth || 90, h = no.offsetHeight || 44;
-  const vw = window.innerWidth, vh = window.innerHeight;
-  // доступная область с отступами от краёв
-  const minX = pad, maxX = Math.max(pad, vw - w - pad);
-  const minY = pad, maxY = Math.max(pad, vh - h - pad);
+  // запас под поворот кнопки, чтобы угол не вылезал
+  const rotPad = 12;
+  const minX = offX + pad, maxX = Math.max(minX, offX + vw - w - pad - rotPad);
+  const minY = offY + pad, maxY = Math.max(minY, offY + vh - h - pad - rotPad);
 
   // несколько попыток найти точку, не накрывающую кнопку музыки в правом-верхнем углу
   const music = document.getElementById('music').getBoundingClientRect();
@@ -376,7 +429,7 @@ function runAway(){
                            y + h < music.top - 8 || y > music.bottom + 8);
     if(!overlapMusic) ok = true;
   }
-  // финальная страховка — жёстко зажимаем в границах экрана
+  // жёстко зажимаем в границах
   x = Math.min(Math.max(x, minX), maxX);
   y = Math.min(Math.max(y, minY), maxY);
 
@@ -384,19 +437,37 @@ function runAway(){
   no.style.margin = '0';
   no.style.left = x+'px';
   no.style.top = y+'px';
-  no.style.transform = `rotate(${Math.random()*24-12}deg)`;
+  no.style.transform = `rotate(${Math.random()*20-10}deg)`;
+  clampNoIntoView(); // финальная подгонка с учётом реального bounding box
   blip();
 }
 
-// если меняется размер окна/поворот телефона — возвращаем сбежавшую кнопку в границы
-window.addEventListener('resize', ()=>{
+// возвращает кнопку «Нет» строго внутрь видимой области (учитывает поворот)
+function clampNoIntoView(){
   if(no.style.position !== 'fixed' || no.style.display === 'none') return;
-  const pad = 12, w = no.offsetWidth, h = no.offsetHeight;
-  const maxX = Math.max(pad, window.innerWidth - w - pad);
-  const maxY = Math.max(pad, window.innerHeight - h - pad);
-  no.style.left = Math.min(parseFloat(no.style.left)||pad, maxX)+'px';
-  no.style.top  = Math.min(parseFloat(no.style.top)||pad, maxY)+'px';
-});
+  const vp = window.visualViewport;
+  const vw = vp ? vp.width : window.innerWidth;
+  const vh = vp ? vp.height : window.innerHeight;
+  const offX = vp ? vp.offsetLeft : 0;
+  const offY = vp ? vp.offsetTop : 0;
+  const pad = 6;
+  const r = no.getBoundingClientRect();        // реальные габариты с учётом rotate
+  let left = parseFloat(no.style.left) || 0;
+  let top  = parseFloat(no.style.top)  || 0;
+  if(r.left < offX + pad)            left += (offX + pad) - r.left;
+  if(r.right > offX + vw - pad)      left -= r.right - (offX + vw - pad);
+  if(r.top < offY + pad)             top  += (offY + pad) - r.top;
+  if(r.bottom > offY + vh - pad)     top  -= r.bottom - (offY + vh - pad);
+  no.style.left = left + 'px';
+  no.style.top  = top + 'px';
+}
+
+// при изменении окна / показе адресной строки / повороте — держим кнопку в кадре
+['resize','orientationchange'].forEach(ev=>window.addEventListener(ev, clampNoIntoView));
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', clampNoIntoView);
+  window.visualViewport.addEventListener('scroll', clampNoIntoView);
+}
 no.addEventListener('mouseenter', runAway);
 no.addEventListener('pointerdown', e=>{ e.preventDefault(); runAway(); });
 no.addEventListener('click', e=>{ e.preventDefault(); runAway(); });
@@ -425,6 +496,7 @@ yes.addEventListener('click', ()=>{
   document.getElementById('title').innerHTML = CONFIG.successTitle;
   document.getElementById('sub').textContent = CONFIG.successSub;
   document.getElementById('planner').classList.add('show');
+  card.classList.add('compact');
   card.style.transform='rotate(0deg)';
   celebrate();
 });
@@ -536,7 +608,147 @@ document.getElementById('confirm').addEventListener('click', ()=>{
   celebrate();
 });
 
-/* ---------- салют из сердечек ---------- */
+/* ---------- генерация красивой открытки (canvas) ---------- */
+function roundRectPath(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+async function makeShareCard(){
+  // дождёмся подгрузки шрифтов, чтобы текст рисовался правильно
+  try{
+    await Promise.all([
+      document.fonts.load('600 80px Fraunces'),
+      document.fonts.load('italic 600 80px Fraunces'),
+      document.fonts.load('700 60px Caveat'),
+      document.fonts.load('700 40px Nunito')
+    ]);
+    await document.fonts.ready;
+  }catch(e){}
+
+  const W=1080, H=1440;
+  const cv=document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+
+  // фон-градиент
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#fff8f3'); bg.addColorStop(1,'#f7c9c2');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  // мягкие световые пятна
+  function glow(cx,cy,rad,col){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+  glow(W*0.18,H*0.12,520,'rgba(253,231,223,0.9)');
+  glow(W*0.9,H*0.2,520,'rgba(252,219,224,0.9)');
+
+  // декоративные сердечки по краям
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  const deco=['💗','💕','🌸','💞','🤍','💖'];
+  const spots=[[110,180,46,-18],[980,150,40,14],[140,1280,42,12],[960,1300,48,-12],[90,720,34,-10],[1000,760,36,16],[250,1380,30,8],[840,90,30,-8]];
+  spots.forEach(([x,y,s,r])=>{
+    ctx.save();ctx.globalAlpha=.85;ctx.translate(x,y);ctx.rotate(r*Math.PI/180);
+    ctx.font=`${s}px "Nunito", sans-serif`;ctx.fillText(deco[(x+y)%deco.length],0,0);ctx.restore();
+  });
+
+  // карточка
+  const m=70, cx=m, cy=120, cw=W-m*2, ch=H-cy-110;
+  ctx.save();
+  ctx.shadowColor='rgba(120,50,60,0.35)'; ctx.shadowBlur=60; ctx.shadowOffsetY=28;
+  roundRectPath(ctx,cx,cy,cw,ch,52); ctx.fillStyle='#fff7f0'; ctx.fill();
+  ctx.restore();
+  // пунктирная рамка
+  ctx.save(); ctx.setLineDash([20,16]); ctx.lineWidth=4; ctx.strokeStyle='rgba(201,95,107,0.45)';
+  roundRectPath(ctx,cx,cy,cw,ch,52); ctx.stroke(); ctx.restore();
+  // тонкая золотая рамка внутри
+  ctx.save(); ctx.lineWidth=2; ctx.strokeStyle='rgba(217,168,108,0.55)';
+  roundRectPath(ctx,cx+22,cy+22,cw-44,ch-44,36); ctx.stroke(); ctx.restore();
+
+  const midX=W/2;
+  // надпись-подводка
+  ctx.fillStyle='#c95f6b'; ctx.font='700 62px "Caveat", cursive';
+  ctx.fillText('у нас свидание!', midX, cy+150);
+  // большое сердце
+  ctx.font='150px "Nunito", sans-serif'; ctx.fillText('💞', midX, cy+310);
+  // заголовок
+  ctx.fillStyle='#5b3a45'; ctx.font='600 96px "Fraunces", serif';
+  ctx.fillText('Это свидание', midX, cy+460);
+
+  // разделитель
+  ctx.strokeStyle='rgba(217,168,108,0.6)'; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(midX-120,cy+540); ctx.lineTo(midX+120,cy+540); ctx.stroke();
+  ctx.fillStyle='#d9a86c'; ctx.font='44px "Nunito",sans-serif'; ctx.fillText('✶',midX,cy+540);
+
+  // тип свидания
+  ctx.fillStyle='#c95f6b'; ctx.font='700 40px "Caveat",cursive';
+  ctx.fillText('что нас ждёт', midX, cy+620);
+  ctx.fillStyle='#5b3a45'; ctx.font='600 66px "Fraunces",serif';
+  wrapText(ctx, chosenType||'', midX, cy+690, cw-180, 78);
+
+  // дата
+  ctx.fillStyle='#c95f6b'; ctx.font='700 40px "Caveat",cursive';
+  ctx.fillText('когда', midX, cy+810);
+  ctx.fillStyle='#5b3a45'; ctx.font='600 72px "Fraunces",serif';
+  ctx.fillText(selectedDate?fmtLong(selectedDate):'', midX, cy+885);
+
+  // подпись внизу
+  ctx.fillStyle='#b07a82'; ctx.font='700 52px "Caveat",cursive';
+  ctx.fillText('не могу дождаться 💗', midX, cy+ch-90);
+
+  return cv;
+}
+
+// перенос текста по словам (на случай длинного названия)
+function wrapText(ctx,text,x,y,maxW,lh){
+  const words=String(text).split(' '); let line=''; const lines=[];
+  for(const w of words){
+    const test=line?line+' '+w:w;
+    if(ctx.measureText(test).width>maxW && line){ lines.push(line); line=w; }
+    else line=test;
+  }
+  if(line) lines.push(line);
+  const startY=y-((lines.length-1)*lh)/2;
+  lines.forEach((l,i)=>ctx.fillText(l,x,startY+i*lh));
+}
+
+const saveBtn=document.getElementById('saveBtn');
+const imgOverlay=document.getElementById('imgOverlay');
+saveBtn.addEventListener('click', async ()=>{
+  const old=saveBtn.textContent;
+  saveBtn.textContent='Рисую открытку…';
+  saveBtn.disabled=true;
+  try{
+    const cv=await makeShareCard();
+    const dataUrl=cv.toDataURL('image/png');
+    const prev=document.getElementById('preview');
+    prev.innerHTML='';
+    const img=new Image(); img.src=dataUrl; img.alt='Наше свидание';
+    prev.appendChild(img);
+    imgOverlay.classList.add('show');   // открытка во всплывающем окне (без скролла на странице)
+    // попытка сразу скачать (на ПК)
+    cv.toBlob(blob=>{
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url; a.download='nashe-svidanie.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+    },'image/png');
+    saveBtn.textContent='Показать ещё раз 📸';
+    saveBtn.disabled=false;
+    document.getElementById('savehint').textContent='готово! 💌';
+    celebrate();
+  }catch(e){
+    saveBtn.textContent=old; saveBtn.disabled=false;
+    document.getElementById('savehint').textContent='не вышло сохранить, попробуй ещё 🥺';
+  }
+});
+function closeImg(){ imgOverlay.classList.remove('show'); }
+document.getElementById('imgClose').addEventListener('click', closeImg);
+imgOverlay.addEventListener('click', e=>{ if(e.target===imgOverlay) closeImg(); });
+
 const burst = document.getElementById('burst');
 function celebrate(){
   const cx = window.innerWidth/2, cy = window.innerHeight/2;
