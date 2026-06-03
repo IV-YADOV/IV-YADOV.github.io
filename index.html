@@ -405,19 +405,13 @@ function runAway(){
   yes.style.transform = `scale(${scale})`;
   yes.style.zIndex = 5;
 
-  // реально видимая область (учитывает адресную строку браузера на мобилке)
-  const vp = window.visualViewport;
-  const vw = vp ? vp.width : window.innerWidth;
-  const vh = vp ? vp.height : window.innerHeight;
-  const offX = vp ? vp.offsetLeft : 0;
-  const offY = vp ? vp.offsetTop : 0;
-
-  const pad = 14;
+  // перемещаем «нет» в случайную точку строго внутри видимого экрана
+  const pad = 12;
   const w = no.offsetWidth || 90, h = no.offsetHeight || 44;
-  // запас под поворот кнопки, чтобы угол не вылезал
-  const rotPad = 12;
-  const minX = offX + pad, maxX = Math.max(minX, offX + vw - w - pad - rotPad);
-  const minY = offY + pad, maxY = Math.max(minY, offY + vh - h - pad - rotPad);
+  const vw = window.innerWidth, vh = window.innerHeight;
+  // доступная область с отступами от краёв
+  const minX = pad, maxX = Math.max(pad, vw - w - pad);
+  const minY = pad, maxY = Math.max(pad, vh - h - pad);
 
   // несколько попыток найти точку, не накрывающую кнопку музыки в правом-верхнем углу
   const music = document.getElementById('music').getBoundingClientRect();
@@ -429,7 +423,7 @@ function runAway(){
                            y + h < music.top - 8 || y > music.bottom + 8);
     if(!overlapMusic) ok = true;
   }
-  // жёстко зажимаем в границах
+  // финальная страховка — жёстко зажимаем в границах экрана
   x = Math.min(Math.max(x, minX), maxX);
   y = Math.min(Math.max(y, minY), maxY);
 
@@ -437,37 +431,19 @@ function runAway(){
   no.style.margin = '0';
   no.style.left = x+'px';
   no.style.top = y+'px';
-  no.style.transform = `rotate(${Math.random()*20-10}deg)`;
-  clampNoIntoView(); // финальная подгонка с учётом реального bounding box
+  no.style.transform = `rotate(${Math.random()*24-12}deg)`;
   blip();
 }
 
-// возвращает кнопку «Нет» строго внутрь видимой области (учитывает поворот)
-function clampNoIntoView(){
+// если меняется размер окна/поворот телефона — возвращаем сбежавшую кнопку в границы
+window.addEventListener('resize', ()=>{
   if(no.style.position !== 'fixed' || no.style.display === 'none') return;
-  const vp = window.visualViewport;
-  const vw = vp ? vp.width : window.innerWidth;
-  const vh = vp ? vp.height : window.innerHeight;
-  const offX = vp ? vp.offsetLeft : 0;
-  const offY = vp ? vp.offsetTop : 0;
-  const pad = 6;
-  const r = no.getBoundingClientRect();        // реальные габариты с учётом rotate
-  let left = parseFloat(no.style.left) || 0;
-  let top  = parseFloat(no.style.top)  || 0;
-  if(r.left < offX + pad)            left += (offX + pad) - r.left;
-  if(r.right > offX + vw - pad)      left -= r.right - (offX + vw - pad);
-  if(r.top < offY + pad)             top  += (offY + pad) - r.top;
-  if(r.bottom > offY + vh - pad)     top  -= r.bottom - (offY + vh - pad);
-  no.style.left = left + 'px';
-  no.style.top  = top + 'px';
-}
-
-// при изменении окна / показе адресной строки / повороте — держим кнопку в кадре
-['resize','orientationchange'].forEach(ev=>window.addEventListener(ev, clampNoIntoView));
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', clampNoIntoView);
-  window.visualViewport.addEventListener('scroll', clampNoIntoView);
-}
+  const pad = 12, w = no.offsetWidth, h = no.offsetHeight;
+  const maxX = Math.max(pad, window.innerWidth - w - pad);
+  const maxY = Math.max(pad, window.innerHeight - h - pad);
+  no.style.left = Math.min(parseFloat(no.style.left)||pad, maxX)+'px';
+  no.style.top  = Math.min(parseFloat(no.style.top)||pad, maxY)+'px';
+});
 no.addEventListener('mouseenter', runAway);
 no.addEventListener('pointerdown', e=>{ e.preventDefault(); runAway(); });
 no.addEventListener('click', e=>{ e.preventDefault(); runAway(); });
