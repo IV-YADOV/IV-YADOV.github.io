@@ -1,248 +1,623 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FEML Season 3</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Приглашение 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blush:#f7d9d0;
+    --rose:#e58a8a;
+    --rose-deep:#c95f6b;
+    --cream:#fff7f0;
+    --plum:#5b3a45;
+    --gold:#d9a86c;
+    --leaf:#a8c4a2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{height:100%;}
+  body{
+    font-family:'Nunito',sans-serif;
+    color:var(--plum);
+    background:
+      radial-gradient(120% 90% at 15% 10%, #fde7df 0%, transparent 55%),
+      radial-gradient(120% 100% at 90% 20%, #fcdbe0 0%, transparent 50%),
+      radial-gradient(140% 120% at 50% 110%, #f6c9c2 0%, transparent 60%),
+      linear-gradient(160deg, #fff8f3 0%, #fbe6e1 100%);
+    background-attachment:fixed;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    min-height:100dvh;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding:24px 14px;
+  }
+  /* paper grain */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.4;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  /* floating background hearts */
+  #bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .float{position:absolute;bottom:-40px;animation:rise linear infinite;opacity:0;}
+  @keyframes rise{
+    0%{transform:translateY(0) rotate(0deg) scale(var(--s));opacity:0;}
+    12%{opacity:var(--o);}
+    88%{opacity:var(--o);}
+    100%{transform:translateY(-112vh) rotate(var(--r)) scale(var(--s));opacity:0;}
+  }
+
+  .card{
+    position:relative;z-index:10;
+    width:min(92vw,460px);
+    margin:auto 0;
+    background:var(--cream);
+    border-radius:26px;
+    padding:46px 34px 40px;
+    text-align:center;
+    box-shadow:0 30px 60px -22px rgba(150,70,80,.45), 0 4px 0 rgba(255,255,255,.6) inset;
+    border:2px dashed rgba(201,95,107,.35);
+    transform:rotate(-1.2deg);
+    animation:pop .8s cubic-bezier(.2,1.1,.3,1) both;
+  }
+  @keyframes pop{0%{transform:rotate(-1.2deg) scale(.85);opacity:0;}100%{transform:rotate(-1.2deg) scale(1);opacity:1;}}
+  .card::before{
+    content:"";position:absolute;inset:9px;border-radius:18px;border:1px solid rgba(217,168,108,.4);pointer-events:none;
+  }
+
+  .stamp{
+    position:absolute;top:-18px;right:-14px;width:74px;height:74px;border-radius:50%;
+    background:var(--rose);color:#fff;display:flex;align-items:center;justify-content:center;
+    font-family:'Caveat',cursive;font-size:18px;line-height:1.05;font-weight:700;
+    box-shadow:0 8px 18px -6px rgba(201,95,107,.7);transform:rotate(12deg);
+    border:2px dashed rgba(255,255,255,.7);
+  }
+
+  .eyebrow{font-family:'Caveat',cursive;font-size:26px;color:var(--rose-deep);transform:rotate(-2deg);display:inline-block;}
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,7.5vw,44px);
+    line-height:1.05;margin:6px 0 4px;letter-spacing:-.5px;
+  }
+  h1 em{font-style:italic;color:var(--rose-deep);}
+  .sub{font-size:16px;color:#8a6a72;margin:14px auto 6px;max-width:32ch;line-height:1.5;}
+  .big-heart{font-size:50px;display:block;margin:10px auto 2px;animation:beat 1.4s ease-in-out infinite;}
+  @keyframes beat{0%,100%{transform:scale(1);}14%{transform:scale(1.18);}28%{transform:scale(1);}42%{transform:scale(1.12);}}
+
+  .btns{display:flex;gap:14px;justify-content:center;align-items:center;margin-top:26px;flex-wrap:wrap;position:relative;min-height:62px;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;font-weight:700;transition:transform .15s ease, box-shadow .2s ease, background .2s;}
+  .yes{
+    background:var(--rose-deep);color:#fff;font-size:18px;padding:15px 34px;border-radius:40px;
+    box-shadow:0 12px 22px -8px rgba(201,95,107,.8);
+  }
+  .yes:hover{transform:translateY(-2px) scale(1.04);}
+  .yes:active{transform:scale(.97);}
+  .no{
+    background:#fff;color:#9a7c83;font-size:16px;padding:13px 26px;border-radius:40px;
+    box-shadow:0 6px 14px -6px rgba(150,90,100,.5);border:1.5px solid rgba(201,95,107,.25);
+    position:relative;z-index:100;
+  }
+
+  .music{
+    position:fixed;top:16px;right:16px;z-index:30;width:48px;height:48px;border-radius:50%;
+    background:rgba(255,255,255,.8);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;
+    font-size:20px;box-shadow:0 8px 18px -8px rgba(150,90,100,.6);color:var(--rose-deep);
+  }
+  .music.off{opacity:.55;}
+  .music .bars{display:flex;gap:2px;align-items:flex-end;height:18px;}
+  .music .bars i{width:3px;background:var(--rose-deep);border-radius:2px;animation:eq .9s ease-in-out infinite;}
+  .music .bars i:nth-child(2){animation-delay:.2s;} .music .bars i:nth-child(3){animation-delay:.4s;} .music .bars i:nth-child(4){animation-delay:.1s;}
+  .music.off .bars i{animation-play-state:paused;height:5px!important;}
+  @keyframes eq{0%,100%{height:5px;}50%{height:18px;}}
+
+  .hint{font-size:13px;color:#b89aa0;margin-top:16px;font-family:'Caveat',cursive;font-size:18px;}
+
+  /* celebration */
+  #burst{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden;}
+  .conf{position:absolute;will-change:transform;}
+  @keyframes conffall{to{transform:translate(var(--tx),var(--ty)) rotate(var(--rot));opacity:0;}}
+
+  .details{margin-top:18px;background:rgba(247,217,208,.45);border-radius:16px;padding:16px;display:none;animation:pop .6s both;}
+  .details.show{display:block;}
+  .details .row{display:flex;align-items:center;gap:10px;justify-content:center;font-size:16px;color:var(--plum);margin:6px 0;line-height:1.4;}
+  .details .row b{font-family:'Fraunces',serif;font-weight:600;}
+
+  /* planner */
+  .planner{margin-top:20px;display:none;animation:pop .6s both;}
+  .planner.show{display:block;}
+  .plabel{font-family:'Caveat',cursive;font-size:22px;color:var(--rose-deep);margin:14px 0 8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;}
+  .chip{
+    background:#fff;border:1.5px solid rgba(201,95,107,.25);color:var(--plum);
+    padding:10px 14px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;
+    transition:transform .12s, background .2s, border-color .2s, box-shadow .2s;
+    box-shadow:0 4px 10px -6px rgba(150,90,100,.4);
+  }
+  .chip:hover{transform:translateY(-2px);}
+  .chip.sel{background:var(--rose-deep);color:#fff;border-color:var(--rose-deep);box-shadow:0 10px 18px -8px rgba(201,95,107,.7);}
+  .datefield{
+    font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:var(--plum);
+    background:#fff;border:1.5px solid rgba(201,95,107,.3);border-radius:14px;
+    padding:13px 18px;width:100%;max-width:260px;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    box-shadow:0 4px 10px -6px rgba(150,90,100,.4);transition:transform .12s,box-shadow .2s;
+  }
+  .datefield:hover{transform:translateY(-2px);box-shadow:0 8px 16px -8px rgba(150,90,100,.55);}
+  .datefield.chosen{background:var(--blush);border-color:var(--rose);}
+  .df-ico{font-size:18px;}
+
+  .note{font-family:'Caveat',cursive;font-size:17px;color:#b07a82;margin-top:8px;}
+  .confirm{margin-top:18px;}
+
+  /* ---------- кастомный календарь ---------- */
+  .cal-overlay{
+    position:fixed;inset:0;z-index:200;display:none;
+    align-items:center;justify-content:center;padding:18px;
+    background:rgba(91,58,69,.38);backdrop-filter:blur(4px);
+    animation:fade .25s ease both;
+  }
+  .cal-overlay.show{display:flex;}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+  .cal{
+    width:min(94vw,340px);background:var(--cream);
+    border-radius:24px;padding:20px 18px 16px;
+    border:2px dashed rgba(201,95,107,.35);
+    box-shadow:0 28px 60px -20px rgba(120,50,60,.55);
+    animation:pop .4s cubic-bezier(.2,1.1,.3,1) both;
+    position:relative;
+  }
+  .cal::before{content:"";position:absolute;inset:7px;border-radius:18px;border:1px solid rgba(217,168,108,.4);pointer-events:none;}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .cal-title{font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:var(--plum);text-transform:capitalize;}
+  .cal-nav{
+    width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+    background:#fff;color:var(--rose-deep);font-size:22px;line-height:1;font-weight:700;
+    box-shadow:0 4px 10px -5px rgba(150,90,100,.5);transition:transform .12s,opacity .2s;
+    display:flex;align-items:center;justify-content:center;padding-bottom:3px;
+  }
+  .cal-nav:hover{transform:scale(1.08);}
+  .cal-nav:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+  .cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px;}
+  .cal-week span{font-family:'Nunito';font-size:12px;font-weight:700;color:#bd99a0;text-align:center;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-day{
+    aspect-ratio:1/1;border:none;background:transparent;border-radius:50%;
+    font-family:'Nunito';font-size:15px;font-weight:600;color:var(--plum);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s,color .15s;
+  }
+  .cal-day:hover:not(:disabled){background:var(--blush);transform:scale(1.06);}
+  .cal-day.empty{visibility:hidden;cursor:default;}
+  .cal-day:disabled{color:#d8c2c5;cursor:not-allowed;text-decoration:line-through;}
+  .cal-day.today:not(.sel){box-shadow:inset 0 0 0 1.5px var(--gold);}
+  .cal-day.sel{background:var(--rose-deep);color:#fff;font-weight:700;box-shadow:0 6px 14px -6px rgba(201,95,107,.8);}
+  .cal-foot{display:flex;justify-content:flex-end;margin-top:12px;}
+  .cal-close{
+    background:transparent;border:none;cursor:pointer;font-family:'Caveat',cursive;
+    font-size:19px;color:var(--rose-deep);padding:4px 8px;
+  }
+
+  /* ---------- адаптация под телефон ---------- */
+  @media (max-width:520px){
+    body{padding:18px 10px;}
+    .card{
+      width:100%;max-width:none;
+      padding:38px 22px 32px;border-radius:22px;
+      transform:rotate(-1deg);
+    }
+    @keyframes pop{0%{transform:rotate(-1deg) scale(.85);opacity:0;}100%{transform:rotate(-1deg) scale(1);opacity:1;}}
+    .stamp{width:64px;height:64px;font-size:15px;top:-14px;right:-8px;}
+    .big-heart{font-size:44px;}
+    .eyebrow{font-size:23px;}
+    .sub{font-size:15px;}
+    .btns{gap:12px;margin-top:22px;}
+    .yes{font-size:17px;padding:14px 30px;}
+    .no{font-size:15px;padding:12px 22px;}
+    .chip{font-size:13px;padding:9px 13px;}
+    .datefield{font-size:16px;max-width:100%;}
+    .plabel{font-size:20px;}
+    .music{width:44px;height:44px;top:12px;right:12px;}
+  }
+  @media (max-width:360px){
+    .card{padding:32px 16px 28px;}
+    h1{font-size:27px;}
+    .chip{font-size:12px;padding:8px 11px;}
+  }
+  /* избегаем перекоса на самых маленьких высотах */
+  @media (max-height:560px){
+    .big-heart{font-size:38px;margin:6px auto 0;}
+    .card{padding-top:30px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s!important;}
+  }
+</style>
 </head>
 <body>
+<div id="bg"></div>
+<div id="burst"></div>
 
-    <div class="sakura-container" id="sakuraContainer"></div>
-    <div class="vignette"></div>
+<div class="music" id="music" title="Музыка">
+  <div class="bars"><i style="height:8px"></i><i style="height:16px"></i><i style="height:11px"></i><i style="height:14px"></i></div>
+</div>
 
-    <nav class="bottom-nav glass">
-        <div class="nav-item active" onclick="switchTab('overview')">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span class="label">Главная</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('format')">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span class="label">Формат</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('register')">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-            <span class="label">Заявка</span>
-        </div>
-    </nav>
+<div class="card" id="card">
+  <div class="stamp">для<br>тебя</div>
+  <span class="eyebrow">у меня вопрос…</span>
+  <span class="big-heart">💌</span>
+  <h1 id="title">Пойдёшь со мной<br>на <em>свидание?</em></h1>
+  <p class="sub" id="sub">Обещаю вкусный кофе, неловкие шутки и хорошую компанию ☕️</p>
 
-    <main class="content-wrapper">
-        
-        <section id="overview" class="page active fadeIn">
-            <div class="hero">
-                <div class="logo-wrapper">
-                    <div class="silver-glow"></div>
-                    <img src="FEMLE3_without_bg.png" alt="Logo" class="logo">
-                </div>
-                <h1 class="metal-text">FEML <span class="thin">SERIES</span></h1>
-                <div class="status-row">
-                    <span class="badge">Episode 3</span>
-                    <span class="divider">|</span>
-                    <span class="badge">Far East</span>
-                </div>
-            </div>
+  <div class="btns" id="btns">
+    <button class="yes" id="yes">Да! 💗</button>
+    <button class="no" id="no">Нет</button>
+  </div>
 
-            <div class="card glass prize-pool-card">
-                <div class="section-label">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px; vertical-align: middle;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    Prize Pool
-                </div>
-                <div class="total-prize">50,000₽</div>
-                <div class="prize-bars">
-                    <div class="p-bar gold" style="width: 100%"><span>1st: 25,000₽</span></div>
-                    <div class="p-bar silver" style="width: 60%"><span>2nd: 15,000₽</span></div>
-                    <div class="p-bar bronze" style="width: 40%"><span>3rd: 10,000₽</span></div>
-                </div>
-            </div>
+  <div class="planner" id="planner">
+    <p class="plabel">Какое хочешь свидание?</p>
+    <div class="chips" id="chips"></div>
+    <p class="plabel">Выбери дату 💌</p>
+    <button class="datefield" id="datefield">
+      <span class="df-ico">📅</span>
+      <span class="df-text" id="dftext">Нажми, чтобы выбрать</span>
+    </button>
+    <p class="note" id="dnote">только после 8-го — зарплата же 😅💸</p>
+    <button class="yes confirm" id="confirm">Готово 💌</button>
+  </div>
 
-            <div class="section-header">
-                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-                <h2>Этапы Турнира</h2>
-            </div>
+  <!-- кастомный календарь -->
+  <div class="cal-overlay" id="calOverlay">
+    <div class="cal" id="cal" role="dialog" aria-modal="true" aria-label="Календарь">
+      <div class="cal-head">
+        <button class="cal-nav" id="calPrev" aria-label="Назад">‹</button>
+        <div class="cal-title" id="calTitle">—</div>
+        <button class="cal-nav" id="calNext" aria-label="Вперёд">›</button>
+      </div>
+      <div class="cal-week">
+        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-foot">
+        <button class="cal-close" id="calClose">отмена</button>
+      </div>
+    </div>
+  </div>
 
-            <div class="roadmap">
-                <div class="road-item">
-                    <div class="road-dot"></div>
-                    <div class="road-content">
-                        <span class="phase-tag">Phase 1</span>
-                        <h4>Group Stage</h4>
-                        <p>2 Группы по 4 команды. Round Robin.<br>Матчи: <b>Best of 3</b>.</p>
-                    </div>
-                </div>
-                <div class="road-item">
-                    <div class="road-dot"></div>
-                    <div class="road-content">
-                        <span class="phase-tag">Phase 2</span>
-                        <h4>Play-In (Decider)</h4>
-                        <p>Стыковые матчи за слот:<br>2-е место A vs 3-е место B<br>3-е место A vs 2-е место B</p>
-                    </div>
-                </div>
-                <div class="road-item active">
-                    <div class="road-dot pulse"></div>
-                    <div class="road-content">
-                        <span class="phase-tag">Main Event</span>
-                        <h4>Play-Off</h4>
-                        <p>Double Elimination (Верхняя/Нижняя сетки).<br>Матчи: <b>Bo3</b>. Финал: <b>Bo5</b>.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <div class="details" id="details">
+    <div class="row" id="finalrow">💞 <span id="finaltext"></span></div>
+  </div>
 
-        <section id="format" class="page fadeIn">
-            <div class="section-header">
-                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <h2>Детальный Регламент</h2>
-            </div>
+  <p class="hint" id="hint">нажми «да» 🙈 (или попробуй поймать «нет»)</p>
+</div>
 
-            <div class="card glass info-block">
-                <div class="block-head">
-                    <div class="icon-box-svg">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <h3>Group Stage</h3>
-                </div>
-                <div class="block-body">
-                    <ul class="detail-list">
-                        <li><b>Участники:</b> 8 команд (2 группы по 4).</li>
-                        <li><b>Система:</b> Round Robin (каждый с каждым 1 раз).</li>
-                        <li><b>Формат:</b> <span class="highlight">Best of 3</span> (до 2-х побед).</li>
-                        <li><b>Выход:</b> 1-е места групп выходят в Верхнюю сетку Play-Off. 2-3 места играют Play-In. 4-е вылетают.</li>
-                    </ul>
-                </div>
-            </div>
+<script>
+/* ====== ЛЕГКО ПОМЕНЯТЬ ПОД СЕБЯ ====== */
+const CONFIG = {
+  title: 'Пойдёшь со мной<br>на <em>свидание?</em>',
+  sub: 'Обещаю вкусный кофе, неловкие шутки и хорошую компанию ☕️',
+  // фразы кнопки «Нет» по мере того, как её пытаются поймать
+  noTexts: ['Нет','Точно нет?','Подумай ещё 🥺','Уверен(а)?','Ну пожалуйста','Последний шанс…','А если так?','Не уходи 🥹','Я быстрее 😏','Поймай меня','Не-а 💨','😭','Ну ещё разок','💔','Сдаюсь? Никогда','Беги за «Да» →'],
+  yesAfter: 'Ураа! 🥳',
+  successTitle: 'Ты сказала <em>да!</em> 💞',
+  successSub: 'Теперь самое приятное — выбери, каким будет наше свидание 👇',
+  // варианты свидания на выбор
+  dateTypes: [
+    {emoji:'☕️', label:'Уютное кафе'},
+    {emoji:'🍿', label:'Кино'},
+    {emoji:'🌅', label:'Прогулка на закате'},
+    {emoji:'🕯️', label:'Ужин при свечах'},
+    {emoji:'🧺', label:'Пикник'},
+    {emoji:'🎁', label:'Сюрприз от меня'}
+  ],
+  // самое раннее число — 8-е (зарплата 💸). всё, что раньше, выбрать нельзя
+  minDay: 8,
+  finalTitle: 'Договорились! 💖',
+  finalSub: (type,date)=>`Наше свидание: ${type} — ${date}. Уже не могу дождаться! 😊`
+};
+/* ===================================== */
 
-            <div class="card glass info-block">
-                <div class="block-head">
-                    <div class="icon-box-svg">
-                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
-                    </div>
-                    <h3>Play-In Stage</h3>
-                </div>
-                <div class="block-body">
-                    <p class="desc-text">Перекрестные матчи за посев (Bo3):</p>
-                    <div class="versus-grid">
-                        <div class="vs-row">
-                            <span class="team-pos">A2</span>
-                            <span class="vs-sign">vs</span>
-                            <span class="team-pos">B3</span>
-                        </div>
-                        <div class="vs-row">
-                            <span class="team-pos">A3</span>
-                            <span class="vs-sign">vs</span>
-                            <span class="team-pos">B2</span>
-                        </div>
-                    </div>
-                    <p class="desc-text small">Победители выходят в Play-Off. Проигравшие начинают с нижней сетки (или вылетают, согласно полному регламенту).</p>
-                </div>
-            </div>
+document.getElementById('title').innerHTML = CONFIG.title;
+document.getElementById('sub').textContent = CONFIG.sub;
 
-            <div class="card glass info-block">
-                <div class="block-head">
-                    <div class="icon-box-svg">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-                    </div>
-                    <h3>Play-Off</h3>
-                </div>
-                <div class="block-body">
-                    <ul class="detail-list">
-                        <li><b>Сетка:</b> Double Elimination (Верхняя и Нижняя).</li>
-                        <li><b>Стандартный матч:</b> <span class="highlight">Best of 3</span>.</li>
-                        <li><b>Grand Final:</b> <span class="highlight gold-txt">Best of 5</span>.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="section-header">
-                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <h2>FAQ</h2>
-            </div>
-            <div class="accordion">
-                <div class="accordion-item glass">
-                    <div class="acc-head">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:10px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        Даты проведения?
-                    </div>
-                    <div class="acc-body">Квалификации (Группы) стартуют 15 марта. Финал запланирован на конец месяца.</div>
-                </div>
-                <div class="accordion-item glass">
-                    <div class="acc-head">
-                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:10px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                        Требования к медиа
-                    </div>
-                    <div class="acc-body">Наличие логотипа (PNG) и фото капитана — строго обязательно для оформления трансляций.</div>
-                </div>
-            </div>
-        </section>
+/* ---------- фоновые сердечки ---------- */
+const bg = document.getElementById('bg');
+const SHAPES = ['💗','💕','💖','🌸','💞','🤍'];
+function spawnFloat(){
+  const el = document.createElement('div');
+  el.className='float';
+  el.textContent = SHAPES[Math.random()*SHAPES.length|0];
+  const s = .6+Math.random()*1.4;
+  el.style.left = Math.random()*100+'vw';
+  el.style.fontSize = (16+Math.random()*22)+'px';
+  el.style.setProperty('--s', s);
+  el.style.setProperty('--o', (.35+Math.random()*.4).toFixed(2));
+  el.style.setProperty('--r', (Math.random()*120-60)+'deg');
+  el.style.animationDuration = (9+Math.random()*9)+'s';
+  bg.appendChild(el);
+  setTimeout(()=>el.remove(), 19000);
+}
+for(let i=0;i<10;i++) setTimeout(spawnFloat, i*500);
+setInterval(spawnFloat, 900);
 
-        <section id="register" class="page fadeIn">
-            <div class="section-header">
-                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                <h2>Подача Заявки</h2>
-            </div>
-            
-            <p class="sub-text glass">
-                Заполните данные для всех 5 игроков основы + запасного.<br>
-                <span style="color:var(--accent)">Важно:</span> Медиа-активность обязательна.
-            </p>
-            
-            <form id="regForm" class="detailed-form">
-                <h3 class="form-section-title">Организация</h3>
-                
-                <div class="form-group">
-                    <label>Название Команды</label>
-                    <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <input type="text" id="teamName" placeholder="Team Spirit" required>
-                    </div>
-                </div>
+/* ---------- убегающая кнопка «Нет» ---------- */
+const no = document.getElementById('no');
+const yes = document.getElementById('yes');
+const card = document.getElementById('card');
+let tries = 0;
 
-                <div class="form-group">
-                    <label>Ссылка на Логотип (URL)</label>
-                    <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <input type="url" id="logoLink" placeholder="Google Drive / Imgur" required>
-                    </div>
-                </div>
+function runAway(){
+  tries++;
+  // текст «нет» меняется
+  no.textContent = CONFIG.noTexts[Math.min(tries, CONFIG.noTexts.length-1)];
+  // «да» растёт
+  const scale = Math.min(1 + tries*0.12, 2.2);
+  yes.style.transform = `scale(${scale})`;
+  yes.style.zIndex = 5;
 
-                <div class="form-group">
-                    <label>Telegram Капитана</label>
-                    <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                        <input type="text" id="contact" placeholder="@username" required>
-                    </div>
-                </div>
+  // перемещаем «нет» в случайную точку строго внутри видимого экрана
+  const pad = 12;
+  const w = no.offsetWidth || 90, h = no.offsetHeight || 44;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  // доступная область с отступами от краёв
+  const minX = pad, maxX = Math.max(pad, vw - w - pad);
+  const minY = pad, maxY = Math.max(pad, vh - h - pad);
 
-                <h3 class="form-section-title" style="margin-top:20px;">Состав Команды</h3>
-                <p class="hint-text" style="margin-bottom:15px;">Формат: Никнейм (ID)</p>
+  // несколько попыток найти точку, не накрывающую кнопку музыки в правом-верхнем углу
+  const music = document.getElementById('music').getBoundingClientRect();
+  let x, y, ok = false;
+  for(let i=0;i<14 && !ok;i++){
+    x = minX + Math.random()*(maxX - minX);
+    y = minY + Math.random()*(maxY - minY);
+    const overlapMusic = !(x + w < music.left - 8 || x > music.right + 8 ||
+                           y + h < music.top - 8 || y > music.bottom + 8);
+    if(!overlapMusic) ok = true;
+  }
+  // финальная страховка — жёстко зажимаем в границах экрана
+  x = Math.min(Math.max(x, minX), maxX);
+  y = Math.min(Math.max(y, minY), maxY);
 
-                <div class="form-group"><label>Капитан</label><div class="input-wrapper"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input type="text" id="player1" placeholder="Nick (ID)" required></div></div>
-                <div class="form-group"><label>Игрок 2</label><div class="input-wrapper"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input type="text" id="player2" placeholder="Nick (ID)" required></div></div>
-                <div class="form-group"><label>Игрок 3</label><div class="input-wrapper"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input type="text" id="player3" placeholder="Nick (ID)" required></div></div>
-                <div class="form-group"><label>Игрок 4</label><div class="input-wrapper"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input type="text" id="player4" placeholder="Nick (ID)" required></div></div>
-                <div class="form-group"><label>Игрок 5</label><div class="input-wrapper"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input type="text" id="player5" placeholder="Nick (ID)" required></div></div>
-                <div class="form-group"><label>Запасной (Необязательно)</label><div class="input-wrapper"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg><input type="text" id="playerSub" placeholder="Nick (ID)"></div></div>
+  no.style.position = 'fixed';
+  no.style.margin = '0';
+  no.style.left = x+'px';
+  no.style.top = y+'px';
+  no.style.transform = `rotate(${Math.random()*24-12}deg)`;
+  blip();
+}
 
-                <label class="custom-checkbox-container">
-                    <input type="checkbox" id="mediaAgreement" required>
-                    <span class="checkmark">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
-                    <span class="checkbox-text">
-                        Я подтверждаю, что команда готова к <b>медиа-активности</b> (фото, интервью) и согласна с регламентом.
-                    </span>
-                </label>
+// если меняется размер окна/поворот телефона — возвращаем сбежавшую кнопку в границы
+window.addEventListener('resize', ()=>{
+  if(no.style.position !== 'fixed' || no.style.display === 'none') return;
+  const pad = 12, w = no.offsetWidth, h = no.offsetHeight;
+  const maxX = Math.max(pad, window.innerWidth - w - pad);
+  const maxY = Math.max(pad, window.innerHeight - h - pad);
+  no.style.left = Math.min(parseFloat(no.style.left)||pad, maxX)+'px';
+  no.style.top  = Math.min(parseFloat(no.style.top)||pad, maxY)+'px';
+});
+no.addEventListener('mouseenter', runAway);
+no.addEventListener('pointerdown', e=>{ e.preventDefault(); runAway(); });
+no.addEventListener('click', e=>{ e.preventDefault(); runAway(); });
 
-                <button type="button" class="main-submit-btn" onclick="submitForm()">
-                    ОТПРАВИТЬ ЗАЯВКУ
-                </button>
-                
-                <div style="height: 30px;"></div>
-            </form>
-        </section>
-    </main>
+// убегает уже при приближении курсора — поймать почти нереально
+let escaped = false; // станет true после первого прыжка
+let lastDodge = 0;
+document.addEventListener('pointermove', e=>{
+  if(no.style.display==='none') return;
+  const now = Date.now();
+  if(now - lastDodge < 120) return; // не дёргаться слишком часто
+  const r = no.getBoundingClientRect();
+  const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+  const radius = escaped ? 130 : 90; // после первого побега область «страха» больше
+  if(dist < radius){ lastDodge = now; escaped = true; runAway(); }
+});
 
-    <script src="script.js"></script>
+/* ---------- «Да» ---------- */
+yes.addEventListener('click', ()=>{
+  ensureAudio();
+  successChime();
+  yes.style.display='none';
+  no.style.display='none';
+  document.getElementById('hint').style.display='none';
+  document.getElementById('title').innerHTML = CONFIG.successTitle;
+  document.getElementById('sub').textContent = CONFIG.successSub;
+  document.getElementById('planner').classList.add('show');
+  card.style.transform='rotate(0deg)';
+  celebrate();
+});
+
+/* ---------- планировщик свидания ---------- */
+const chipsEl = document.getElementById('chips');
+let chosenType = null;
+CONFIG.dateTypes.forEach(t=>{
+  const c = document.createElement('button');
+  c.className='chip';
+  c.textContent = t.emoji+' '+t.label;
+  c.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel');
+    chosenType = t.emoji+' '+t.label;
+    blip();
+  });
+  chipsEl.appendChild(c);
+});
+
+// ---------- дата: кастомный календарь ----------
+// самое раннее доступное число — 8-е (зарплата); если сегодня позже — то с сегодня
+function startOfDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+const TODAY = startOfDay(new Date());
+let MINDATE = new Date(TODAY.getFullYear(), TODAY.getMonth(), CONFIG.minDay);
+if(TODAY > MINDATE) MINDATE = TODAY;
+
+let selectedDate = null;
+let viewY = MINDATE.getFullYear(), viewM = MINDATE.getMonth();
+
+const MONTHS = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+const overlay = document.getElementById('calOverlay');
+const grid = document.getElementById('calGrid');
+const calTitle = document.getElementById('calTitle');
+const dftext = document.getElementById('dftext');
+const datefield = document.getElementById('datefield');
+
+function fmtLong(d){ return d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'}); }
+
+function renderCal(){
+  calTitle.textContent = MONTHS[viewM]+' '+viewY;
+  grid.innerHTML='';
+  const first = new Date(viewY, viewM, 1);
+  // понедельник — первый день недели
+  let lead = (first.getDay()+6)%7;
+  const daysIn = new Date(viewY, viewM+1, 0).getDate();
+  for(let i=0;i<lead;i++){
+    const e=document.createElement('span'); e.className='cal-day empty'; grid.appendChild(e);
+  }
+  for(let day=1; day<=daysIn; day++){
+    const dd = new Date(viewY, viewM, day);
+    const b=document.createElement('button');
+    b.className='cal-day'; b.textContent=day;
+    if(dd < MINDATE) b.disabled=true;
+    if(+dd === +TODAY) b.classList.add('today');
+    if(selectedDate && +dd === +selectedDate) b.classList.add('sel');
+    b.addEventListener('click', ()=>{
+      selectedDate = dd;
+      dftext.textContent = fmtLong(dd);
+      datefield.classList.add('chosen');
+      document.getElementById('dnote').textContent = 'отличный выбор 💕';
+      blip();
+      renderCal();
+      setTimeout(closeCal, 180);
+    });
+    grid.appendChild(b);
+  }
+  // нельзя листать раньше месяца минимальной даты
+  const atMin = (viewY < MINDATE.getFullYear()) ||
+                (viewY === MINDATE.getFullYear() && viewM <= MINDATE.getMonth());
+  document.getElementById('calPrev').disabled = atMin;
+}
+
+function openCal(){
+  if(selectedDate){ viewY=selectedDate.getFullYear(); viewM=selectedDate.getMonth(); }
+  else { viewY=MINDATE.getFullYear(); viewM=MINDATE.getMonth(); }
+  renderCal();
+  overlay.classList.add('show');
+}
+function closeCal(){ overlay.classList.remove('show'); }
+
+datefield.addEventListener('click', openCal);
+document.getElementById('calClose').addEventListener('click', closeCal);
+overlay.addEventListener('click', e=>{ if(e.target===overlay) closeCal(); });
+document.getElementById('calPrev').addEventListener('click', ()=>{
+  viewM--; if(viewM<0){viewM=11;viewY--;} renderCal();
+});
+document.getElementById('calNext').addEventListener('click', ()=>{
+  viewM++; if(viewM>11){viewM=0;viewY++;} renderCal();
+});
+
+document.getElementById('confirm').addEventListener('click', ()=>{
+  if(!chosenType){
+    document.getElementById('dnote').textContent = 'сначала выбери, какое свидание 👆';
+    return;
+  }
+  if(!selectedDate){
+    document.getElementById('dnote').textContent = 'и выбери дату — не раньше 8-го 💸';
+    return;
+  }
+  const dateStr = fmtLong(selectedDate);
+  document.getElementById('planner').classList.remove('show');
+  document.getElementById('title').innerHTML = CONFIG.finalTitle;
+  document.getElementById('sub').textContent = 'Записала в сердечко 💗';
+  document.getElementById('finaltext').innerHTML =
+    `<b>${chosenType}</b><br>${dateStr}`;
+  document.getElementById('details').classList.add('show');
+  successChime();
+  celebrate();
+});
+
+/* ---------- салют из сердечек ---------- */
+const burst = document.getElementById('burst');
+function celebrate(){
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className='conf';
+    c.textContent = SHAPES[Math.random()*SHAPES.length|0];
+    c.style.left=cx+'px'; c.style.top=cy+'px';
+    c.style.fontSize=(14+Math.random()*26)+'px';
+    const ang = Math.random()*Math.PI*2, dist=120+Math.random()*window.innerWidth*0.5;
+    c.style.setProperty('--tx',(Math.cos(ang)*dist)+'px');
+    c.style.setProperty('--ty',(Math.sin(ang)*dist - 120)+'px');
+    c.style.setProperty('--rot',(Math.random()*720-360)+'deg');
+    c.style.animation=`conffall ${1.2+Math.random()*1.3}s cubic-bezier(.15,.6,.3,1) forwards`;
+    burst.appendChild(c);
+    setTimeout(()=>c.remove(),2600);
+  }
+}
+
+/* ---------- звук (Web Audio, без файлов) ---------- */
+let actx, master, musicOn=false, loopTimer;
+function ensureAudio(){
+  if(actx) return;
+  actx = new (window.AudioContext||window.webkitAudioContext)();
+  master = actx.createGain();
+  master.gain.value = 0.0;
+  master.connect(actx.destination);
+}
+function tone(freq, t, dur, vol, type){
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type||'sine'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol,t+0.03);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(master);
+  o.start(t); o.stop(t+dur+0.05);
+}
+// нежная зацикленная мелодия
+const MELODY=[523.25,659.25,783.99,659.25,587.33,698.46,587.33,523.25];
+let step=0;
+function playLoopNote(){
+  if(!musicOn) return;
+  const t=actx.currentTime;
+  const f=MELODY[step%MELODY.length];
+  tone(f,t,0.9,0.12,'triangle');
+  tone(f/2,t,1.1,0.05,'sine');
+  step++;
+  loopTimer=setTimeout(playLoopNote,460);
+}
+function successChime(){
+  const t=actx.currentTime;
+  [523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,t+i*0.1,0.6,0.18,'sine'));
+}
+function blip(){
+  if(!actx||!musicOn) return;
+  tone(880,actx.currentTime,0.12,0.06,'sine');
+}
+
+const musicBtn=document.getElementById('music');
+musicBtn.classList.add('off');
+function toggleMusic(){
+  ensureAudio();
+  if(actx.state==='suspended') actx.resume();
+  musicOn=!musicOn;
+  musicBtn.classList.toggle('off',!musicOn);
+  master.gain.cancelScheduledValues(actx.currentTime);
+  master.gain.linearRampToValueAtTime(musicOn?0.9:0.0, actx.currentTime+0.4);
+  if(musicOn){ step=0; playLoopNote(); }
+  else clearTimeout(loopTimer);
+}
+musicBtn.addEventListener('click', toggleMusic);
+
+// мягко предлагаем включить музыку при первом касании
+let prompted=false;
+function firstTouch(){
+  if(prompted) return; prompted=true;
+  ensureAudio();
+  if(!musicOn) toggleMusic();
+  window.removeEventListener('pointerdown',firstTouch);
+}
+window.addEventListener('pointerdown',firstTouch,{once:false});
+</script>
 </body>
 </html>
